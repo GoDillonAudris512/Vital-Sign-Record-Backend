@@ -7,6 +7,13 @@ module.exports = {
             // Get request body
             const { email, time, bloodPressure, heartbeat, respiratoryRate, temperature } = req.body
 
+            // Check existing record
+            const existingRecord = await Record.findOne({ email: email, time: new Date(time)})
+            if (existingRecord) {
+                return res.status(422).json({
+                    message: "Record already exist!"
+                })
+            }
             // Create new record
             const newRecord = new Record({
                 email: email, 
@@ -52,6 +59,46 @@ module.exports = {
         catch (err) {
             res.status(500).json({
                 message: `Error creating record: ${err}`
+            })
+        }
+    },
+
+    // Function to update vital sign record to database
+    async update(req, res) {
+        try {
+            // Get request body
+            const { email, time, bloodPressure, heartbeat, respiratoryRate, temperature } = req.body
+
+            // Check existing record
+            const existingRecord = await Record.findOne({ email: email, time: new Date(time)})
+            if (!existingRecord) {
+                return res.status(400).json({
+                    message: "Record does not exist!"
+                })
+            }
+
+            // Update record
+            const newRecordData = {
+                email: email, 
+                time: new Date(time),
+                bloodPressure: {
+                    systolic: bloodPressure.systolic,
+                    diastolic: bloodPressure.diastolic
+                },
+                heartbeat: heartbeat,
+                respiratoryRate: respiratoryRate,
+                temperature: temperature
+            }
+            await Record.findByIdAndUpdate(existingRecord._id, newRecordData)
+
+            // Send back OK response
+            res.status(200).json({
+                message: "Record updated successfully!"
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                message: `Error updating record: ${err}`
             })
         }
     },
