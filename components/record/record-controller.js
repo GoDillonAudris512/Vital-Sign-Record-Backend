@@ -31,6 +31,28 @@ module.exports = {
                 message: `Error creating record: ${err}`
             })
         }
+    },
 
-    } 
+    // Function to get all user vital sign records in database
+    async findAll(req, res) {
+        try {
+            // Get request body
+            const { email } = req.body
+
+            // Get records associated with that email
+            const records = await Record.find({ email: email})
+                .lean()
+                .select({ _id: 0, __v: 0 , bloodPressure: {_id: 0}});
+
+            // Send back OK response
+            res.status(200).json({
+                records: records
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                message: `Error creating record: ${err}`
+            })
+        }
+    }
 }
