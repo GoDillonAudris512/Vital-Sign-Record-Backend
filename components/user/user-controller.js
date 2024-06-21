@@ -2,12 +2,11 @@ const jwt = require('jsonwebtoken')
 const bcryptjs = require('bcryptjs')
 const User = require('./user-model')
 
-const createJWT = (id) => {
-    const jwtSecret = process.env.JWT_SECRET
-    const expireTime = process.env.JWT_EXPIRATION_TIME
-    
-    const payload = { userID: id }
+const jwtSecret = process.env.JWT_SECRET
+const expireTime = process.env.JWT_EXPIRATION_TIME
 
+const createJWT = (email) => {
+    const payload = { email: email }
     return jwt.sign(payload, jwtSecret, { expiresIn: expireTime })
 }
 
@@ -33,7 +32,7 @@ module.exports = {
             // Send back OK response
             res.status(200).json({
                 message: "User created successfully!",
-                token: createJWT(newUser._id)
+                token: createJWT(newUser.email)
             })
         }
         catch (err) {
@@ -68,7 +67,7 @@ module.exports = {
             // Send back OK response
             res.status(200).json({
                 message: "User authorized!",
-                token: createJWT(existingUser._id)
+                token: createJWT(existingUser.email)
             })
         }
         catch (err) {
