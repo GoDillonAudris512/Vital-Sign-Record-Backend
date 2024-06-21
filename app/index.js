@@ -23,6 +23,9 @@ class Application {
 
         // Register hello api (for web availability checking)
         this.express.use('/api', require('../components/general/hello-api'))
+
+        // Register user api
+        this.express.use('/api', require('../components/user/user-api'))
     }
 
     run() {
