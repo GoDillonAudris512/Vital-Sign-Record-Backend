@@ -41,5 +41,40 @@ module.exports = {
                 message: `Error creating user: ${err}`
             })
         }
+    },
+
+    // Function to check existing user in database
+    async findAndCheck(req, res) {
+        try {
+            // Get request body
+            const { email, password} = req.body
+
+            // Check for existing user
+            const existingUser = await User.findOne({ email })
+            if (!existingUser) {
+                return res.status(401).json({
+                    message: "User does not exist!"
+                })
+            }
+            
+            // Check user password
+            const isPasswordMatch = await bcryptjs.compare(password, existingUser.password)
+            if (!isPasswordMatch) {
+                return res.status(401).json({
+                    message: "User unauthorized!"
+                })
+            }
+
+            // Send back OK response
+            res.status(200).json({
+                message: "User authorized!",
+                token: createJWT(existingUser._id)
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                message: `Error checking user: ${err}`
+            })
+        }
     }
 }
