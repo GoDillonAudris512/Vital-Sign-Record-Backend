@@ -54,5 +54,34 @@ module.exports = {
                 message: `Error creating record: ${err}`
             })
         }
+    },
+
+    // Delete vital sign record with matching email and time
+    async delete(req, res) {
+        try {
+            // Get request body
+            const { email, time } = req.body
+
+            // Get matching record
+            const existingRecord = await Record.findOne({ email: email, time: new Date(time)})
+            if (!existingRecord) {
+                return res.status(400).json({
+                    message: "Record does not exist!"
+                })
+            }
+
+            // Delete record
+            await Record.findByIdAndDelete(existingRecord._id)
+
+            // Send back OK response
+            res.status(200).json({
+                message: "Record deleted successfully!"
+            })
+        }
+        catch (err) {
+            res.status(500).json({
+                message: `Error creating record: ${err}`
+            })
+        }
     }
 }
