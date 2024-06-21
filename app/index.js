@@ -26,6 +26,9 @@ class Application {
 
         // Register user api
         this.express.use('/api', require('../components/user/user-api'))
+
+        // Register record api
+        this.express.use('/api', require('../components/record/record-api'))
     }
 
     run() {
