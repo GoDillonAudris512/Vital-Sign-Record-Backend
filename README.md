@@ -48,7 +48,11 @@ $ git clone https://github.com/GoDillonAudris512/Vital-Sign-Record-Backend.git
 
 ### Run the application on development server
 1. Create a .env file inside the repository directory using .env.example file as the template. You can keep the variables as it is. The server should automatically use port 9090 as the default port 
-2. Run the server using this following command
+2. Install needed dependencies using this command
+    ``` bash
+    yarn install
+    ```
+3. Run the server using this following command
     ``` bash
     docker compose up
     ```
