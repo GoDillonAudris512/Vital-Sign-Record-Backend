@@ -10,11 +10,13 @@ class Application {
         this.dbConfig = require('./config/database')
     }
     
+    // Setup and connect to database
     async setupDatabase() {
         let db = this.dbConfig
         await db.connect().catch(console.warn)
     }
 
+    // Setup server
     setupServer() {
         // Register services to app
         this.express.use(cors())
@@ -31,6 +33,7 @@ class Application {
         this.express.use('/api', require('../components/record/record-api'))
     }
 
+    // Run server
     run() {
         this.express.listen(this.serverConfig.port, () => {
             this.setupDatabase().then(() => {

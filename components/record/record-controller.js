@@ -127,7 +127,7 @@ module.exports = {
         }
         catch (err) {
             res.status(500).json({
-                message: `Error creating record: ${err}`
+                message: `Error deleting record: ${err}`
             })
         }
     }

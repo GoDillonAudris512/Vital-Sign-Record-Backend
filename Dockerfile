@@ -12,4 +12,4 @@ COPY --from=builder /backend .
 
 CMD ["yarn", "start"]
 
-EXPOSE 8080
+EXPOSE 9090

@@ -5,6 +5,7 @@ const User = require('./user-model')
 const jwtSecret = process.env.JWT_SECRET
 const expireTime = process.env.JWT_EXPIRATION_TIME
 
+// Sign payload into JWT
 const createJWT = (email) => {
     const payload = { email: email }
     return jwt.sign(payload, jwtSecret, { expiresIn: expireTime })

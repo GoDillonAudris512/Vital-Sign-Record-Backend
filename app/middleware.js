@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const jwtSecret = process.env.JWT_SECRET
 
 module.exports = {
+    // Middleware to protect routes
     authMiddleware(req, res, next) {
         const authHeader = req.headers.authorization
 
@@ -15,11 +16,13 @@ module.exports = {
         // Get JWT token
         const token = authHeader.split(' ')[1]
         try {
+            // If JWT valid
             const decoded = jwt.verify(token, jwtSecret)
             req.body.email = decoded.email
             next()
         }
         catch (err) {
+            // If JWT invalid, send response
             return res.status(403).json({
                 message: "Invalid JWT token!"
             })
